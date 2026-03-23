@@ -166,3 +166,28 @@ function sendMsg() {
   <input id="userInput" placeholder="Ask something...">
   <button onclick="askAI()">Send</button>
 </div>
+<script>
+async function askAI() {
+  let input = document.getElementById("userInput").value;
+  let chatlog = document.getElementById("chatlog");
+
+  chatlog.innerHTML += "<p><b>You:</b> " + input + "</p>";
+
+  let response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer YOUR_API_KEY",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [{role: "user", content: input}]
+    })
+  });
+
+  let data = await response.json();
+  let reply = data.choices[0].message.content;
+
+  chatlog.innerHTML += "<p><b>AI:</b> " + reply + "</p>";
+}
+</script>
