@@ -136,3 +136,28 @@ window.onscroll = function() {
   <a href="#" style="color:white; margin:10px;">About</a>
   <a href="#" style="color:white; margin:10px;">Contact</a>
 </nav>
+<div id="chatbox" style="width:300px; border:1px solid #ccc; padding:10px;">
+  <div id="messages" style="height:200px; overflow-y:auto;"></div>
+  
+  <input id="msg" type="text" placeholder="Type message..." style="width:70%;">
+  <button onclick="sendMsg()">Send</button>
+</div>
+
+<script>
+function sendMsg() {
+  let input = document.getElementById("msg");
+  let msg = input.value;
+
+  if(msg.trim() === "") return;
+
+  let box = document.getElementById("messages");
+  box.innerHTML += "<p><b>You:</b> " + msg + "</p>";
+
+  // Fake reply
+  setTimeout(() => {
+    box.innerHTML += "<p><b>Support:</b> Thanks for your message!</p>";
+  }, 500);
+
+  input.value = "";
+}
+</script>
