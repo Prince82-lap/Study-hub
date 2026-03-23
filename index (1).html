@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prince Study Hub</title>
+<style>
+body{font-family:Arial;margin:0;background:#121212;color:#fff}
+header{background:#1f1f1f;padding:15px;text-align:center}
+nav{background:#333;padding:10px;text-align:center}
+nav a{color:#fff;margin:10px;text-decoration:none}
+section{padding:20px}
+.card{background:#1e1e1e;padding:15px;margin:10px 0;border-radius:10px}
+button{padding:8px 15px;background:#00c853;color:#fff;border:none;border-radius:5px;cursor:pointer}
+input{padding:8px;width:70%}
+.admin{background:#2a2a2a;padding:15px;margin-top:20px;border-radius:10px}
+</style>
+</head>
+<body>
+<header>
+<h1>📚 Prince Study Hub</h1>
+</header>
+<nav>
+<a href="#">Maths</a>
+<a href="#">Science</a>
+<a href="#">Contact</a>
+</nav>
+<section>
+<div class="card">
+<h2>📘 Maths Notes</h2>
+<a href="https://drive.google.com/file/d/1El7CZK0eW07NiKioX6KXVP22Hvrj609s/view" target="_blank">
+<button>Download Notes 📩</button>
+</a>
+</div>
+<div id="notesContainer"></div>
+<div class="admin">
+<h2>🔒 Developer Login</h2>
+<input type="password" id="password" placeholder="Enter Password">
+<button onclick="login()">Login</button>
+<div id="adminPanel" style="display:none;">
+<h3>Add Notes</h3>
+<input type="text" id="noteInput" placeholder="Write note">
+<button onclick="addNote()">Add</button>
+<h3>Upload PDF</h3>
+<input type="file" id="fileInput">
+<button onclick="uploadFile()">Upload</button>
+</div>
+</div>
+</section>
+<script>
+let correctPassword = "1234";
+function login(){
+let pass = document.getElementById("password").value;
+if(pass === correctPassword){
+document.getElementById("adminPanel").style.display = "block";
+alert("Login Successful");
+}else{alert("Wrong Password");}}
+function addNote(){
+let note = document.getElementById("noteInput").value;
+if(note === "") return;
+let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+notes.push(note);
+localStorage.setItem("notes", JSON.stringify(notes));
+displayNotes();
+document.getElementById("noteInput").value="";}
+function displayNotes(){
+let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+let container = document.getElementById("notesContainer");
+container.innerHTML="";
+notes.forEach(n=>{
+let div=document.createElement("div");
+div.className="card";
+div.innerHTML=n;
+container.appendChild(div);
+});}
+function uploadFile(){
+let file = document.getElementById("fileInput").files[0];
+if(!file) return alert("Select file");
+let url = URL.createObjectURL(file);
+let link = `<a href='${url}' target='_blank'>📄 ${file.name}</a>`;
+let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+notes.push(link);
+localStorage.setItem("notes", JSON.stringify(notes));
+displayNotes();}
+displayNotes();
+</script>
+</body>
+</html>
